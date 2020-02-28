@@ -40,6 +40,25 @@ public class Board extends JPanel implements ActionListener {
         for(Sprite thisGuy: actors){
             thisGuy.paint(g);
         }
+
+        g.setColor(Color.white);
+
+        if(Gamestates.isMENU()){
+            g.setFont(new Font("Comic", Font.BOLD, 100));
+            printString("Shapey Shapes", 0, getWidth()/2, (getHeight()/2)-50, g);
+            g.setFont(new Font("Comic", Font.BOLD, 50));
+            printString("Click to Play!", 0, getWidth()/2, (getWidth()/2)+50, g);
+        }
+
+        if(Gamestates.isPLAY()){
+            g.setFont(new Font("Comic", Font.BOLD, 20));
+            printString("Lives: " + (Integer.toString(STATS.getLives())), 50, 75, 50, g);
+            printString("Score: " + (Integer.toString(STATS.getScore())), 50, 475, 50, g);
+            printString("Shapey Shapes", 0, );
+        }
+
+
+
     }
 
     public void checkCollisions(){
@@ -48,8 +67,10 @@ public class Board extends JPanel implements ActionListener {
             if(actors.get(0).collidesWith(actors.get(i))){
                 if(actors.get(i) instanceof Enemy){
                     game.notClicked();
-                } else
+                } else {
                     actors.get(i).setRemove();
+
+                }
             }
 
         }
@@ -83,5 +104,11 @@ public class Board extends JPanel implements ActionListener {
         }
 
         repaint();
+    }
+
+    private void printString(String s, int width, int x, int y, Graphics g){
+        int stringLen = (int)g.getFontMetrics().getStringBounds(s, g).getWidth();
+        int start = width/2 - stringLen/2;
+        g.drawString(s, start + x, y);
     }
 }
